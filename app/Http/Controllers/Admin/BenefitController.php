@@ -45,6 +45,7 @@ class BenefitController extends AdminController
                     'ar' => $request->description_ar
                 ],
                 'status' => $request->status,
+                'creator_id' => auth()->user()->id
             ]);
 
             return $this->apiResponse(200, 'Benefit Created Successfully', $benefit);
@@ -82,6 +83,7 @@ class BenefitController extends AdminController
                         'ar' => $request->description_ar
                     ],
                     'status' => $request->status,
+                    'editor_id' => auth()->user()->id
                 ]
             );
             return $this->apiResponse(200, 'Benefit Updated Successfully', $benefit);

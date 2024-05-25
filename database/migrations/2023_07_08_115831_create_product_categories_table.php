@@ -13,15 +13,16 @@ return new class extends Migration {
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->json('name');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->json('description')->nullable();
+            $table->string('image');
             $table->unsignedTinyInteger('status')->default(Status::ACTIVE);
-            $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('creator_type',)->nullable();
             $table->bigInteger('creator_id',)->nullable();
             $table->string('editor_type',)->nullable();
             $table->bigInteger('editor_id',)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

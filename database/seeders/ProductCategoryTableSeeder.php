@@ -19,119 +19,41 @@ class ProductCategoryTableSeeder extends Seeder
 
     public array $fashionCategories = [
         [
-            'name'     => 'Men',
-            'children' => [
-                [
-                    'name'     => 'Clothing',
-                    'children' => [
-                        ['name' => 'Hoodies & Sweatshirts'],
-                        ['name' => 'Jackets & Vests'],
-                        ['name' => 'Pants & Tights'],
-                        ['name' => 'Shorts'],
-                        ['name' => 'Tops & T-shirts']
-                    ]
-                ],
-                [
-                    'name'     => 'Shoes',
-                    'children' => [
-                        ['name' => 'Basket Ball'],
-                        ['name' => 'Running'],
-                        ['name' => 'Sandals & Slides'],
-                        ['name' => 'Sneakers'],
-                        ['name' => 'Soccer'],
-                    ]
-                ],
-                [
-                    'name'     => 'Accessories',
-                    'children' => [
-                        ['name' => 'Bags & Backpacks'],
-                        ['name' => 'Hat & Beanies'],
-                        ['name' => 'Socks'],
-                        ['name' => 'Underwear']
-                    ]
-                ],
+            'name'     => [
+                'en' => 'Men',
+                'ar' => 'رجال'
             ],
         ],
         [
-            'name'     => 'Women',
-            'children' => [
-                [
-                    'name'     => 'Clothing',
-                    'children' => [
-                        ['name' => 'Dresses & Skirts'],
-                        ['name' => 'Hoodies & Sweatshirts'],
-                        ['name' => 'Pants'],
-                        ['name' => 'Tights & Leggings'],
-                        ['name' => 'Tops & T-shirts']
-                    ]
-                ],
-                [
-                    'name'     => 'Shoes',
-                    'children' => [
-                        ['name' => 'Running'],
-                        ['name' => 'Sneakers'],
-                        ['name' => 'Training & Gym']
-                    ]
-                ],
-                [
-                    'name'     => 'Accessories',
-                    'children' => [
-                        ['name' => 'Bags & Backpacks'],
-                        ['name' => 'Hats'],
-                        ['name' => 'Socks']
-                    ]
-                ]
-            ]
+            'name'     => [
+                'en' => 'Women',
+                'ar' => 'سيدات'
+            ],
         ],
         [
-            'name'     => 'Juniors',
-            'children' => [
-                [
-                    'name'     => 'Clothing',
-                    'children' => [
-                        ['name' => 'Hoodies & Sweatshirts'],
-                        ['name' => 'Shorts'],
-                        ['name' => 'Tops & T-shirts']
-                    ]
-                ],
-                [
-                    'name'     => 'Shoes',
-                    'children' => [
-                        ['name' => 'Basket Ball'],
-                        ['name' => 'Running'],
-                        ['name' => 'Sneakers']
-                    ]
-                ],
-                [
-                    'name'     => 'Accessories',
-                    'children' => [
-                        ['name' => 'Bags & Backpacks'],
-                        ['name' => 'Hats'],
-                    ]
-                ]
-            ]
+            'name'     => [
+                'en' => 'Juniors',
+                'ar' => 'شباب'
+            ],
         ]
     ];
 
     public function run(): void
     {
         $envService = new EnvEditor();
-        if ($envService->getValue('DEMO') && $envService->getValue('DISPLAY') == 'fashion') {
+        if ($envService->getValue('DEMO')) {
             foreach ($this->fashionCategories as $fashionCategory) {
                 $productCategory = ProductCategory::create([
-                    'parent_id'   => NULL,
                     'name'        => $fashionCategory['name'],
-                    'slug'        => Str::slug($fashionCategory['name'] . rand(1, 100)),
+                    'slug'        => Str::slug($fashionCategory['name']['en'] . rand(1, 100)),
                     'description' => null,
+                    'image'       => 'image',
                     'status'      => Status::ACTIVE,
                 ]);
-                if (file_exists(public_path('/images/seeder/product-category/' . env('DISPLAY') . '/' . strtolower(str_replace(' ', '_', $fashionCategory['name'])) . '.png'))) {
-                    $productCategory->addMedia(public_path('/images/seeder/product-category/' . env('DISPLAY') . '/' . strtolower(str_replace(' ', '_', $fashionCategory['name'])) . '.png'))->preservingOriginal()->toMediaCollection('product-category');
+                if (file_exists(public_path('/images/seeder/product-category/' . env('DISPLAY') . '/' . strtolower(str_replace(' ', '_', $fashionCategory['name']['en'])) . '.png'))) {
+                    $productCategory->addMedia(public_path('/images/seeder/product-category/' . env('DISPLAY') . '/' . strtolower(str_replace(' ', '_', $fashionCategory['name']['en'])) . '.png'))->preservingOriginal()->toMediaCollection('product-category');
                 }
 
-                if (isset($fashionCategory['children']) && count($fashionCategory['children']) > 0) {
-                    $this->nested($fashionCategory['children'], $productCategory->id);
-                }
             }
         }
     }

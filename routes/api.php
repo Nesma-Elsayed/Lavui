@@ -248,7 +248,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum'])->group(func
         Route::prefix('product-category')->name('product-category.')->group(function () {
             Route::get('/', [ProductCategoryController::class, 'index']);
             Route::get('/depth-tree', [ProductCategoryController::class, 'depthTree']);
-            Route::get('/show/{productCategory}', [ProductCategoryController::class, 'show']);
+            Route::get('/{productCategory}', [ProductCategoryController::class, 'show']);
             Route::post('/', [ProductCategoryController::class, 'store']);
             Route::match(['post', 'put', 'patch'], '/{productCategory}', [ProductCategoryController::class, 'update']);
             Route::delete('/{productCategory}', [ProductCategoryController::class, 'destroy']);
@@ -718,7 +718,7 @@ Route::prefix('frontend')->name('frontend.')->middleware(['localization'])->grou
         Route::get('/', [FrontendProductCategoryController::class, 'index']);
         Route::get('/ancestors-and-self/{productCategory:slug}', [FrontendProductCategoryController::class, 'ancestorsAndSelf']);
         Route::get('/tree', [FrontendProductCategoryController::class, 'tree']);
-        Route::get('/show/{productCategory:slug}', [FrontendProductCategoryController::class, 'show']);
+        Route::get('/{productCategory:slug}', [FrontendProductCategoryController::class, 'show']);
     });
 
     Route::prefix('product')->name('product.')->group(function () {

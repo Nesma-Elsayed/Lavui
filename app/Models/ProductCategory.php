@@ -2,31 +2,25 @@
 
 namespace App\Models;
 
-
 use App\Enums\Status;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
-
 
 class ProductCategory extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, HasTranslations;
     use HasRecursiveRelationships;
 
     protected $table = "product_categories";
-    protected $fillable = ['name', 'slug', 'description', 'status', 'parent_id'];
-    protected $casts = [
-        'id'          => 'integer',
-        'name'        => 'string',
-        'slug'        => 'string',
-        'description' => 'string',
-        'status'      => 'integer',
-        'parent_id'   => 'integer',
-    ];
-    protected $appends = array('cover');
+    protected $fillable = ['name', 'slug', 'description', 'image','status'];
+    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'editor_id', 'updated_at', 'created_at'];
+    public $translatable = ['name', 'description'];
+
+//    protected $appends = array('cover');
 
     public function getThumbAttribute(): string
     {
@@ -57,8 +51,8 @@ class ProductCategory extends Model implements HasMedia
         return $this->hasMany(Product::class)->where(['status' => Status::ACTIVE]);
     }
 
-    public function parent_category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(ProductCategory::class, 'parent_id');
-    }
+//    public function parent_category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(ProductCategory::class, 'parent_id');
+//    }
 }

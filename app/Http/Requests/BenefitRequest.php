@@ -22,25 +22,18 @@ class BenefitRequest extends FormRequest
     {
         return [
             'title_en'        => [
-                'required',
-                'string',
-                'max:190',
+                'required', 'string', 'max:190',
                 new UniqueTranslation('title', 'en', Benefit::class)
             ],
             'title_ar'        => [
-                'required',
-                'string',
-                'max:190',
+                'required', 'string', 'max:190',
                 new UniqueTranslation('title', 'ar', Benefit::class)
             ],
-            'description_en' =>
-                [
+            'description_en' => [
                     'required', 'string', 'max:900',
                     new UniqueTranslation('description', 'en', Benefit::class)
-
                 ],
-            'description_ar' =>
-                [
+            'description_ar' => [
                     'required', 'string', 'max:900',
                     new UniqueTranslation('description', 'ar', Benefit::class)
                 ],
@@ -52,32 +45,24 @@ class BenefitRequest extends FormRequest
 
     protected function updateRule(): array
     {
-        $benefitId = $this->route('benefit.id');
+        $ignoreId = $this->route('benefit.id');
 
         return [
             'title_en'        => [
-                'required',
-                'string',
-                'max:190',
-                new UniqueTranslation('title', 'en', Benefit::class, $benefitId)
+                'required', 'string', 'max:190',
+                new UniqueTranslation('title', 'en', Benefit::class, $ignoreId)
             ],
             'title_ar'        => [
-                'required',
-                'string',
-                'max:190',
-                new UniqueTranslation('title', 'ar', Benefit::class, $benefitId)
+                'required', 'string', 'max:190',
+                new UniqueTranslation('title', 'ar', Benefit::class, $ignoreId)
             ],
             'description_en' => [
-                'required',
-                'string',
-                'max:900',
-                new UniqueTranslation('description', 'en', Benefit::class, $benefitId)
+                'required', 'string', 'max:900',
+                new UniqueTranslation('description', 'en', Benefit::class, $ignoreId)
             ],
             'description_ar' => [
-                'required',
-                'string',
-                'max:900',
-                new UniqueTranslation('description', 'ar', Benefit::class, $benefitId)
+                'required', 'string', 'max:900',
+                new UniqueTranslation('description', 'ar', Benefit::class, $ignoreId)
             ],
             'icon' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
             'status' => ['required', 'numeric', 'in:5,10', 'max:24'],

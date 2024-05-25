@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->bigInteger('creator_id')->nullable();
             $table->string('editor_type')->nullable();
             $table->bigInteger('editor_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

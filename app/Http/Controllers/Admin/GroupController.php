@@ -36,6 +36,7 @@ class GroupController extends AdminController
                     'ar' => $request->name_ar
                 ],
                 'status' => $request->status,
+                'creator_id' => auth()->user()->id
             ]);
             return $this->apiResponse(200, 'Group Created Successfully', $group);
         } catch (Exception $exception) {
@@ -61,6 +62,7 @@ class GroupController extends AdminController
                     'ar' => $request->name_ar
                 ],
                 'status' => $request->status,
+                'editor_id' => auth()->user()->id
             ]);
             return $this->apiResponse(200, 'Group Updated Successfully', $group);
         } catch (Exception $exception) {

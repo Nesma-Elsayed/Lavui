@@ -36,10 +36,10 @@ class TextBannerController extends AdminController
                     'ar' => $request->name_ar
                 ],
                 'status' => $request->status,
+                'creator_id' => auth()->user()->id
             ]);
             return $this->apiResponse(200, 'TextBanner Created Successfully', $textBanner);
         } catch (Exception $exception) {
-            dd(1);
             return $this->apiResponse(422, $exception->getMessage());
         }
     }
@@ -61,7 +61,8 @@ class TextBannerController extends AdminController
                    'en' => $request->name_en,
                    'ar' => $request->name_ar
                ],
-               'status' => $request->status
+               'status' => $request->status,
+               'editor_id' => auth()->user()->id
             ]);
             return $this->apiResponse(200, 'TextBanner Updated Successfully', $textBanner);
         } catch (Exception $exception) {

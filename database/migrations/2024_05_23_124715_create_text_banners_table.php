@@ -16,6 +16,11 @@ return new class extends Migration
             $table->id();
             $table->json('name');
             $table->tinyInteger('status')->default(Status::ACTIVE);
+            $table->string('creator_type',)->nullable();
+            $table->bigInteger('creator_id',)->nullable();
+            $table->string('editor_type',)->nullable();
+            $table->bigInteger('editor_id',)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

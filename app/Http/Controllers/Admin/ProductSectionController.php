@@ -92,6 +92,7 @@ class ProductSectionController extends AdminController
                 'slug' => Str::slug($request->name_en),
                 'image' => $image,
                 'status' => $request->status,
+                'creator_id' => auth()->user()->id
             ]);
 
             return $this->apiResponse(200, 'Product section created successfully.', $productSection);
@@ -131,6 +132,7 @@ class ProductSectionController extends AdminController
                 'slug' => Str::slug($productSection->getTranslation('name', 'en')),
                 'image' => $imageName,
                 'status' => $request->status,
+                'editor_id' => auth()->user()->id
             ]);
             return $this->apiResponse(200, 'Product Section Updated Successfully', $productSection);
 
