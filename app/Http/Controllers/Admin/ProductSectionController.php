@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\ImageTrait;
+use App\Models\User;
 use Exception;
 use App\Models\ProductSection;
 use Illuminate\Support\Str;
@@ -92,7 +93,10 @@ class ProductSectionController extends AdminController
                 'slug' => Str::slug($request->name_en),
                 'image' => $image,
                 'status' => $request->status,
-                'creator_id' => auth()->user()->id
+                'creator_id' => auth()->user()->id,
+                'creator_type' => User::class,
+                'editor_id' => auth()->user()->id,
+                'editor_type' => User::class,
             ]);
 
             return $this->apiResponse(200, 'Product section created successfully.', $productSection);
@@ -132,7 +136,8 @@ class ProductSectionController extends AdminController
                 'slug' => Str::slug($productSection->getTranslation('name', 'en')),
                 'image' => $imageName,
                 'status' => $request->status,
-                'editor_id' => auth()->user()->id
+                'editor_id' => auth()->user()->id,
+                'editor_type' => User::class,
             ]);
             return $this->apiResponse(200, 'Product Section Updated Successfully', $productSection);
 

@@ -23,7 +23,8 @@ class BenefitResource extends JsonResource
             'status'      => $this->status,
             'sort'        => $this->sort,
             'thumb'       => $this->thumb,
-            'cover'       => $this->cover
+            'cover'       => $this->cover,
+            "image"       => $this->image,
         ];
     }
 }

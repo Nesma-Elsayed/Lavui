@@ -13,9 +13,9 @@ class ProductSection extends Model
     use HasFactory, HasTranslations, SoftDeletes;
 
     protected $table = "product_sections";
-    protected $fillable = ['name', 'title','description', 'image','slug', 'status'];
+    protected $fillable = ['name', 'title','description', 'image','slug', 'status', 'creator_type', 'creator_id', 'editor_type', 'editor_id'];
     protected array $dates = ['deleted_at'];
-    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'editor_id', 'updated_at', 'created_at'];
+    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'updated_at', 'created_at'];
     public $translatable = ['name', 'title','description'];
 
     public function scopeActive($query, $col = 'status')
@@ -31,6 +31,4 @@ class ProductSection extends Model
     {
         return $this->hasMany(ProductSectionProduct::class, 'product_section_id', 'id');
     }
-
-
 }

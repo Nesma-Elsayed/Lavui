@@ -16,8 +16,8 @@ class ProductCategory extends Model implements HasMedia
     use HasRecursiveRelationships;
 
     protected $table = "product_categories";
-    protected $fillable = ['name', 'slug', 'description', 'image','status'];
-    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'editor_id', 'updated_at', 'created_at'];
+    protected $fillable = ['name', 'slug', 'description', 'image','status', 'creator_id', 'creator_type', 'editor_id', 'editor_type'];
+    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'updated_at', 'created_at'];
     public $translatable = ['name', 'description'];
 
 //    protected $appends = array('cover');
@@ -50,9 +50,4 @@ class ProductCategory extends Model implements HasMedia
     {
         return $this->hasMany(Product::class)->where(['status' => Status::ACTIVE]);
     }
-
-//    public function parent_category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-//    {
-//        return $this->belongsTo(ProductCategory::class, 'parent_id');
-//    }
 }

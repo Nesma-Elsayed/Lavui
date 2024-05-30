@@ -11,6 +11,8 @@ use App\Events\SendOrderGotSms;
 use App\Events\SendOrderGotMail;
 use App\Events\SendOrderGotPush;
 use App\Events\SendVerifyEmailCode;
+use App\Models\Product;
+use App\Observers\ProductObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendSmsCodeNotification;
@@ -70,7 +72,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+//        Product::observe(ProductObserver::class);
     }
 
     /**

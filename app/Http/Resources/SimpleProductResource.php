@@ -21,16 +21,22 @@ class SimpleProductResource extends JsonResource
         $price = count($this->variations) > 0 ? $this->variation_price : $this->selling_price;
         return [
             'id'                => $this->id,
-            'name'              => $this->name,
+            'name_en'           => $this->getTranslation('name', 'en'),
+            "name_ar"           => $this->getTranslation('name', 'ar'),
             'slug'              => $this->slug,
+            'category'          => $this->category?->name,
+            'brand'             => $this->brand?->name,
+            'image_featured'    => $this->image_featured,
             'currency_price'    => AppLibrary::currencyAmountFormat($price),
             'cover'             => $this->cover,
             'flash_sale'        => $this->add_to_flash_sale == Ask::YES,
             'is_offer'          => Carbon::now()->between($this->offer_start_date, $this->offer_end_date),
             'discounted_price'  => AppLibrary::currencyAmountFormat($price - (($price / 100) * $this->discount)),
-            'rating_star'       => $this->rating_star,
-            'rating_star_count' => (int) $this->rating_star_count,
             'wishlist'          => (bool)$this->wishlist,
+            'size'                => $this->size,
+            'arm'                 => $this->arm,
+            'bridge'              => $this->bridge,
+            'double_price_for_two_lens'  => AppLibrary::flatAmountFormat($this->double_price_for_two_lens),
         ];
     }
 }

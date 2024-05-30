@@ -30,10 +30,10 @@ class ProductCategoryRequest extends FormRequest
                 new UniqueTranslation('name', 'ar', ProductCategory::class)
             ],
             'description_en' => [
-                'nullable', 'string', 'max:900'
+                'required', 'string', 'max:900'
             ],
             'description_ar' => [
-                'nullable', 'string', 'max:900'
+                'required', 'string', 'max:900'
             ],
             'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
             'status' => ['required', 'numeric', 'in:5,10'],
@@ -53,10 +53,10 @@ class ProductCategoryRequest extends FormRequest
                 new UniqueTranslation('name', 'ar', ProductCategory::class, $ignoredId)
             ],
             'description_en' => [
-                'nullable', 'string', 'max:900'
+                'required', 'string', 'max:900'
             ],
             'description_ar' => [
-                'nullable', 'string', 'max:900'
+                'required', 'string', 'max:900'
             ],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
             'status' => ['required', 'numeric', 'in:5,10']

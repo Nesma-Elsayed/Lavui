@@ -17,13 +17,20 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->json('name');
             $table->string('slug')->unique();
             $table->string('sku')->unique();
             $table->foreignId('product_category_id')->nullable()->constrained('product_categories');
             $table->foreignId('product_brand_id')->nullable()->constrained('product_brands');
+            $table->foreignId('text_banner_id')->nullable()->constrained('text_banners');
+            $table->foreignId('group_id')->nullable()->constrained('groups');
             $table->foreignId('barcode_id')->nullable()->constrained('barcodes');
             $table->foreignId('unit_id')->nullable()->constrained('units');
+            $table->string('image_featured');
+            $table->unsignedFloat('size')->nullable();
+            $table->unsignedFloat('arm')->nullable();
+            $table->unsignedFloat('bridge')->nullable();
+            $table->unsignedDecimal('double_price_for_two_lens')->nullable();
             $table->unsignedDecimal('buying_price', 13, 6)->default(0);
             $table->unsignedDecimal('selling_price', 13, 6)->default(0);
             $table->unsignedDecimal('variation_price', 13, 6)->default(0);
@@ -33,9 +40,8 @@ return new class extends Migration
             $table->tinyInteger('show_stock_out')->default(Activity::ENABLE);
             $table->unsignedBigInteger('maximum_purchase_quantity')->default(1);
             $table->unsignedBigInteger('low_stock_quantity_warning')->default(1);
-            $table->string('weight')->nullable();
             $table->tinyInteger('refundable')->default(Ask::YES);
-            $table->longText('description')->nullable();
+            $table->json('description')->nullable();
             $table->longText('shipping_and_return')->nullable();
             $table->unsignedTinyInteger('add_to_flash_sale')->default(Ask::NO);
             $table->unsignedDecimal('discount', 13, 6)->default(0);

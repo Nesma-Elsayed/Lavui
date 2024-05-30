@@ -26,9 +26,9 @@ class ShippingAndReturnRequest extends FormRequest
     public function rules()
     {
         return [
-            'shipping_type'                => ['required', 'numeric', 'max_digits:10'],
+            'shipping_type'                => ['required', 'numeric', 'max_digits:10', 'in:5,10'],
             'shipping_cost'                => request('shipping_type') == ShippingType::FLAT_RATE ? ['required', new IniAmount()] : ['nullable'],
-            'is_product_quantity_multiply' => request('shipping_type') == ShippingType::FLAT_RATE ? ['required', 'numeric', 'max_digits:10'] : ['nullable', 'numeric', 'max_digits:10'],
+            'is_product_quantity_multiply' => request('shipping_type') == ShippingType::FLAT_RATE ? ['required', 'numeric', 'max_digits:10', 'in:5,10'] : ['nullable', 'numeric', 'max_digits:10', 'in:5,10'],
             'shipping_and_return'          => ['nullable', 'string', 'max:8000']
         ];
     }

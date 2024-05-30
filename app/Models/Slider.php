@@ -21,13 +21,44 @@ class Slider extends Model implements HasMedia
         'link'        => 'string',
     ];
 
-    public function getImageAttribute(): string
+//    public function getImageAttribute(): string
+//    {
+//        if (!empty($this->getFirstMediaUrl('slider'))) {
+//            $slider = $this->getMedia('slider')->last();
+//            return $slider->getUrl('cover');
+//        }
+//        return asset('images/default/slider.png');
+//    }
+
+    public function getEnImages()
     {
-        if (!empty($this->getFirstMediaUrl('slider'))) {
-            $slider = $this->getMedia('slider')->last();
-            return $slider->getUrl('cover');
-        }
-        return asset('images/default/slider.png');
+//        return $this->getMedia('slider')->map(function (Media $media) {
+//            return [
+//                'url' => $media->getUrl('cover'),
+//                'language' => $media->getCustomProperty('en'),
+//            ];
+//        })->toArray();
+        $language = app()->getLocale(); // Get the current language from the application locale
+        $sliderImage = $this->getMedia('slider')
+            ->filter(fn($mediaItem) => $mediaItem->getCustomProperty('language') === $language)
+            ->last();
+
+        return $sliderImage ? $sliderImage->getUrl('cover') : asset('images/default/slider.png');
+    }
+    public function getArImages()
+    {
+//        return $this->getMedia('slider')->map(function (Media $media) {
+//            return [
+//                'url' => $media->getUrl('cover'),
+//                'language' => $media->getCustomProperty('en'),
+//            ];
+//        })->toArray();
+        $language = app()->getLocale(); // Get the current language from the application locale
+        $sliderImage = $this->getMedia('slider')
+            ->filter(fn($mediaItem) => $mediaItem->getCustomProperty('language') === 'ar')
+            ->last();
+
+        return $sliderImage ? $sliderImage->getUrl('cover') : asset('images/default/slider.png');
     }
 
     public function registerMediaConversions(Media $media = null): void

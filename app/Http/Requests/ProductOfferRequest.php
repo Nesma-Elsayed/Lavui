@@ -25,10 +25,10 @@ class ProductOfferRequest extends FormRequest
     public function rules()
     {
         return [
-            'add_to_flash_sale' => ['required', 'numeric', 'max:24'],
+            'add_to_flash_sale' => ['required', 'numeric', 'max:24', 'in:5,10'],
             'discount'          => ['required', 'numeric', 'max:100', new IniAmount()],
-            'offer_start_date'  => ['required', 'string', 'max:190'],
-            'offer_end_date'    => ['required', 'string', 'max:190'],
+            'offer_start_date'  => ['required', 'date', 'max:190'],
+            'offer_end_date'    => ['required', 'date', 'max:190'],
         ];
     }
 

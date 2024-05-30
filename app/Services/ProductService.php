@@ -711,6 +711,7 @@ class ProductService
                 ->orderBy('name', 'asc')
                 ->get();
         } catch (Exception $exception) {
+            dd(1);
             Log::info($exception->getMessage());
             throw new Exception($exception->getMessage(), 422);
         }

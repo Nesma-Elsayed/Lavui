@@ -11,8 +11,8 @@ class Benefit extends Model
 {
     use HasFactory, HasTranslations, SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'icon', 'status', 'sort'];
-    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'editor_id', 'updated_at', 'created_at'];
+    protected $fillable = ['title', 'description', 'icon', 'status', 'sort', 'creator_id', 'creator_type', 'editor_id', 'editor_type'];
+    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'updated_at', 'created_at'];
     protected array $dates = ['deleted_at'];
     public $translatable = ['title', 'description'];
 }

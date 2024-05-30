@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Enums\Status;
@@ -15,34 +14,33 @@ class GroupTableSeeder extends Seeder
     public function run(): void
     {
         $envService = new EnvEditor();
-        if ($envService->getValue('DEMO')) {
-            $groups = [
-                [
-                    'name'       => json_encode([
-                        'en' => 'group',
-                        'ar' => 'مجموعه'
-                    ]),
-                    'status'      => Status::ACTIVE,
-                    'created_at'  => now(),
-                    'updated_at'  => now()
+        $envService->getValue('DEMO');
+        $groups = [
+            [
+                'name'       => [
+                    'en' => 'group',
+                    'ar' => 'مجموعه'
                 ],
-                [
-                    'name'       => json_encode([
-                        'en' => 'group',
-                        'ar' => 'مجموعه'
-                    ]),
-                    'status'      => Status::ACTIVE,
-                    'created_at'  => now(),
-                    'updated_at'  => now()
+                'status'      => Status::ACTIVE,
+                'created_at'  => now(),
+                'updated_at'  => now()
+            ],
+            [
+                'name'       => [
+                    'en' => 'group',
+                    'ar' => 'مجموعه'
                 ],
-            ];
+                'status'      => Status::ACTIVE,
+                'created_at'  => now(),
+                'updated_at'  => now()
+            ],
+        ];
 
-            foreach ($groups as $group) {
-                $groupObject = Group::create($group);
-                $imagePath = public_path('/images/seeder/group/' . strtolower(str_replace(' ', '_', $group['name'])) . '.png');
-                if (file_exists($imagePath)) {
-                    $groupObject->addMedia($imagePath)->preservingOriginal()->toMediaCollection('group');
-                }
+        foreach ($groups as $group) {
+            $groupObject = Group::create($group);
+            $imagePath = public_path('/images/seeder/benefit/' . strtolower(str_replace(' ', '_', $group['name']['en'])) . '.png');
+            if (file_exists($imagePath)) {
+                $groupObject->addMedia($imagePath)->preservingOriginal()->toMediaCollection('group');
             }
         }
 

@@ -65,7 +65,12 @@ class SliderService
         try {
             $slider = Slider::create($request->validated() + ['link' => $request->link]);
             if ($request->image) {
-                $slider->addMediaFromRequest('image')->toMediaCollection('slider');
+                $slider->addMedia($request->image)
+                    ->withCustomProperties(['language' => 'en'])
+                    ->toMediaCollection('slider');
+                $slider->addMedia($request->image_ar)
+                    ->withCustomProperties(['language' => 'ar'])
+                    ->toMediaCollection('slider');
             }
             return $slider;
         } catch (Exception $exception) {

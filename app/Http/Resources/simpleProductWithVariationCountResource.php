@@ -17,7 +17,8 @@ class simpleProductWithVariationCountResource extends JsonResource
     {
         return [
             'id'                => $this->id,
-            'name'              => $this->name,
+            'name_en'              => $this->getTranslation('name', 'en'),
+            'name_ar'              => $this->getTranslation('name', 'ar'),
             'buying_price'      => AppLibrary::convertAmountFormat($this->buying_price),
             'is_variation'      => count($this->variations) > 0 ? true : false,
             'sku'               => $this->sku,

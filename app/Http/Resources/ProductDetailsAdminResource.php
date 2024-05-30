@@ -17,29 +17,32 @@ class ProductDetailsAdminResource extends JsonResource
      * @param \Illuminate\Http\Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray($request)
     {
         $price = count($this?->variations) > 0 ? $this->variation_price : $this->selling_price;
         return [
             "id"                           => $this->id,
-            "name"                         => $this->name,
+            "name_en"                      => $this->getTranslation('name', 'en'),
+            "name_ar"                      => $this->getTranslation('name', 'ar'),
             "sku"                          => $this->sku,
             "category"                     => $this->category?->name,
             "brand"                        => $this->brand?->name,
+            "group"                        => $this->group?->name,
+            "textBanner"                   => $this->textBanner?->name,
             "barcode"                      => $this->barcode?->name,
             "tax"                          => AppLibrary::taxString($this?->taxes),
             "flat_buying_price"            => AppLibrary::flatAmountFormat($this->buying_price),
             "flat_selling_price"           => AppLibrary::flatAmountFormat($this->selling_price),
             "maximum_purchase_quantity"    => $this->maximum_purchase_quantity,
             "low_stock_quantity_warning"   => $this->low_stock_quantity_warning,
-            "weight"                       => $this->weight,
             "unit"                         => $this->unit?->name,
             "can_purchasable"              => $this->can_purchasable,
             "show_stock_out"               => $this->show_stock_out,
             "refundable"                   => $this->refundable,
             "status"                       => $this->status,
             "tags"                         => AppLibrary::tagString($this?->tags),
-            "description"                  => $this->description === null ? '' : $this->description,
+            "description_en"               => $this->description === null ? '' : $this->getTranslation('description', 'en'),
+            "description_ar"               => $this->description === null ? '' : $this->getTranslation('description', 'ar'),
             "preview"                      => $this->preview,
             "image"                        => $this->preview,
             "images"                       => $this->previews,
@@ -64,6 +67,11 @@ class ProductDetailsAdminResource extends JsonResource
             'stock'                        => $this->show_stock_out == Activity::DISABLE ? $this->can_purchasable == Ask::NO ? (int)env('NON_PURCHASE_QUANTITY') : (int)$this->stock_items_sum_quantity : 0,
             'taxes'                        => SimpleTaxResource::collection($this->taxes),
             'thumb'                        => $this->thumb,
+            'image_featured'               => $this->image_featured,
+            'size'                         => $this->size,
+            'arm'                          => $this->arm,
+            'bridge'                       => $this->bridge,
+            'double_price_for_two_lens'    => AppLibrary::flatAmountFormat($this->double_price_for_two_lens),
         ];
     }
 }

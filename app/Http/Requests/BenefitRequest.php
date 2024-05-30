@@ -39,7 +39,6 @@ class BenefitRequest extends FormRequest
                 ],
             'icon'  => ['required', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
             'status' => ['required', 'numeric', 'in:5,10', 'max:24'],
-
         ];
     }
 

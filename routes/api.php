@@ -420,10 +420,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum'])->group(func
 
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('/', [ProductController::class, 'index']);
-        Route::get('/show/{product}', [ProductController::class, 'show']);
+        Route::get('/{product}', [ProductController::class, 'show']);
         Route::get('/pos-product/{product}', [ProductController::class, 'posProduct']);
         Route::post('/', [ProductController::class, 'store']);
-        Route::match(['post', 'put', 'patch'], '/{product}', [ProductController::class, 'update']);
+        Route::post('/{product}', [ProductController::class, 'update']);
         Route::delete('/{product}', [ProductController::class, 'destroy']);
         Route::post('/upload-image/{product}', [ProductController::class, 'uploadImage']);
         Route::get('/delete-image/{product}/{index}', [ProductController::class, 'deleteImage']);
@@ -431,7 +431,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum'])->group(func
         Route::get('/generate-sku', [ProductController::class, 'generateSku']);
         Route::post('/shipping-and-return/{product}', [ProductController::class, 'shippingAndReturn']);
         Route::post('/offer/{product}', [ProductController::class, 'productOffer']);
-        Route::get('/purchasable-product', [ProductController::class, 'purchasableProducts']);
+//        Route::get('/purchasable-product', [ProductController::class, 'purchasableProducts']);
         Route::get('/simple-product', [ProductController::class, 'simpleProducts']);
 
         Route::prefix('variation')->name('variation.')->group(function () {
@@ -723,7 +723,7 @@ Route::prefix('frontend')->name('frontend.')->middleware(['localization'])->grou
 
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('/', [FrontendProductController::class, 'index']);
-        Route::get('/show/{product:slug}', [FrontendProductController::class, 'show']);
+        Route::get('/{product:slug}', [FrontendProductController::class, 'show']);
         Route::get('/popular-products', [FrontendProductController::class, 'mostPopularProducts']);
         Route::get('/flash-sale-products', [FrontendProductController::class, 'flashSaleProducts']);
         Route::post('/category-wise-products', [FrontendProductController::class, 'categoryWiseProducts']);

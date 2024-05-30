@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Resources\ProductCategoryDepthTreeResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\ImageTrait;
+use App\Models\User;
 use Exception;
 use App\Services\ProductCategoryService;
 use App\Http\Requests\PaginateRequest;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -20,6 +20,17 @@ class ProductCategoryController extends AdminController
     use ApiResponseTrait, ImageTrait;
     private ProductCategoryService $productCategoryService;
 
+    protected array $productCateFilter = [
+        'name',
+        'slug',
+        'description',
+        'status',
+        'image'
+    ];
+
+    protected array $exceptFilter = [
+        'excepts'
+    ];
     public function __construct(ProductCategoryService $productCategory)
     {
         parent::__construct();
@@ -39,7 +50,30 @@ class ProductCategoryController extends AdminController
     public function index(PaginateRequest $request): \Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
         try {
-            $allProductCategories = ProductCategory::get();
+            $requests    = $request->all();
+            $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
+            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 10) : '*';
+            $orderColumn = $request->get('order_column') ?? 'id';
+            $orderType   = $request->get('order_type') ?? 'desc';
+
+            $allProductCategories = ProductCategory::with('products')->where(function ($query) use ($requests) {
+                foreach ($requests as $key => $request) {
+                    if (in_array($key, $this->productCateFilter)) {
+                        $query->where($key, 'like', '%' . $request . '%');
+                    }
+
+                    if (in_array($key, $this->exceptFilter)) {
+                        $explodes = explode('|', $request);
+                        if (is_array($explodes)) {
+                            foreach ($explodes as $explode) {
+                                $query->where('id', '!=', $explode);
+                            }
+                        }
+                    }
+                }
+            })->orderBy($orderColumn, $orderType)->$method(
+                $methodValue
+            );
             return $this->apiResponse(200, 'All Product Categories', $allProductCategories);
         } catch (Exception $exception) {
             return $this->apiResponse(422, $exception->getMessage());
@@ -64,7 +98,10 @@ class ProductCategoryController extends AdminController
                 'image' => $imageName,
                 'status' => $request->status,
                 'slug' => Str::slug($request->name_en),
-                'creator_id' => auth()->user()->id
+                'creator_id' => auth()->user()->id,
+                'creator_type' => User::class,
+                'editor_id' => auth()->user()->id,
+                'editor_type' => User::class,
             ]);
             return $this->apiResponse(200, 'Product Category Created Successfully', $productCategory);
         } catch (Exception $exception) {
@@ -98,7 +135,8 @@ class ProductCategoryController extends AdminController
                'image' => $imageName,
                'status' => $request->status,
                'slug' => Str::slug($request->name_en),
-                'editor_id' => auth()->user()->id
+               'editor_id' => auth()->user()->id,
+               'editor_type' => User::class
             ]);
             return $this->apiResponse(200, 'Product Category Updated Successfully', $productCategory);
         } catch (Exception $exception) {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Status;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -11,10 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, SoftDeletes;
+    use HasFactory, InteractsWithMedia, SoftDeletes, HasTranslations;
 
     protected $table = "products";
     protected $fillable = [
@@ -25,6 +27,8 @@ class Product extends Model implements HasMedia
         'product_brand_id',
         'barcode_id',
         'unit_id',
+        'text_banner_id',
+        'group_id',
         'buying_price',
         'selling_price',
         'variation_price',
@@ -34,7 +38,6 @@ class Product extends Model implements HasMedia
         'show_stock_out',
         'maximum_purchase_quantity',
         'low_stock_quantity_warning',
-        'weight',
         'refundable',
         'description',
         'shipping_and_return',
@@ -45,40 +48,21 @@ class Product extends Model implements HasMedia
         'shipping_type',
         'shipping_cost',
         'is_product_quantity_multiply',
+        'double_price_for_two_lens',
+        'image_featured',
+        'size',
+        'arm',
+        'bridge',
+        'creator_type',
+        'creator_id',
+        'editor_type',
+        'editor_id',
 
     ];
     protected array $dates = ['deleted_at'];
-    protected $casts = [
-        'id'                           => 'integer',
-        'name'                         => 'string',
-        'slug'                         => 'string',
-        'sku'                          => 'string',
-        'product_category_id'          => 'integer',
-        'product_brand_id'             => 'integer',
-        'barcode_id'                   => 'integer',
-        'unit_id'                      => 'integer',
-        'buying_price'                 => 'decimal:6',
-        'selling_price'                => 'decimal:6',
-        'variation_price'              => 'decimal:6',
-        'status'                       => 'integer',
-        'order'                        => 'integer',
-        'can_purchasable'              => 'integer',
-        'show_stock_out'               => 'integer',
-        'maximum_purchase_quantity'    => 'integer',
-        'low_stock_quantity_warning'   => 'integer',
-        'weight'                       => 'string',
-        'refundable'                   => 'integer',
-        'description'                  => 'string',
-        'shipping_and_return'          => 'string',
-        'add_to_flash_sale'            => 'integer',
-        'discount'                     => 'decimal:6',
-        'offer_start_date'             => 'string',
-        'offer_end_date'               => 'string',
-        'shipping_type'                => 'integer',
-        'shipping_cost'                => 'string',
-        'is_product_quantity_multiply' => 'integer',
+    protected $hidden = ['creator_type', 'creator_id', 'editor_type', 'updated_at', 'created_at'];
 
-    ];
+    public $translatable = ['name', 'description'];
 
     public function scopeActive($query, $col = 'status')
     {
@@ -177,6 +161,16 @@ class Product extends Model implements HasMedia
     public function unit(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
+    }
+
+    public function textBanner(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(TextBanner::class, 'text_banner_id', 'id');
+    }
+
+    public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Group::class, 'group_id', 'id');
     }
 
     public function variations(): \Illuminate\Database\Eloquent\Relations\HasMany

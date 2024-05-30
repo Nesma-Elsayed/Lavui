@@ -93,9 +93,10 @@ class BenefitService
                     ],
                 'status' => $request->status,
             ]);
-//            if ($request->image) {
-//                $benefit->addMediaFromRequest('image')->toMediaCollection('benefit');
-//            }
+            if ($request->image) {
+                $benefit->addMediaFromRequest('image')->toMediaCollection('benefit');
+
+            }
             return $benefit;
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
@@ -125,10 +126,11 @@ class BenefitService
                     'status' => $request->status,
                 ]
             );
-//            if ($request->image) {
-//                $benefit->clearMediaCollection('benefit');
-//                $benefit->addMediaFromRequest('image')->toMediaCollection('benefit');
-//            }
+            if ($request->image) {
+                $benefit->clearMediaCollection('benefit');
+                $benefit->addMediaFromRequest('image')->toMediaCollection('benefit');
+
+            }
             return $benefit;
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
